@@ -1,8 +1,11 @@
 # GuPiao
-股票分析
 
 
-https://www.akshare.xyz/zh_CN/latest/data/index.html
+
+https://www.akshare.xyz/index.html
+
+入门资料:
+https://www.cnblogs.com/bitquant/p/7212040.html
 
 
 数据

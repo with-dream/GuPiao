@@ -1,18 +1,29 @@
 import pymysql
 
-# 打开数据库连接
-db = pymysql.connect(host='localhost', port=3306, db='community', user='root', password='123456')
 
-# 使用cursor()方法获取操作游标
-cursor = db.cursor()
+class DBUtils(object):
+    db = pymysql.connect(host='localhost', port=3306, db='gupiao', user='root', password='123456')
+    cursor = db.cursor()
 
-# 使用execute方法执行SQL语句
-cursor.execute("SELECT VERSION()")
+    def __new__(cls, *args, **kwargs):
+        if not hasattr(cls, '_instance'):
+            orig = super(DBUtils, cls)
+            cls._instance = orig.__new__(cls, *args, **kwargs)
+        return cls._instance
 
-# 使用 fetchone() 方法获取一条数据
-data = cursor.fetchone()
-
-print("Database version : %s " % data)
-
-# 关闭数据库连接
-db.close()
+    def init(self):
+        sqlDB = """
+            CREATE DATABASE IF NOT EXISTS gupiao
+            DEFAULT CHARACTER SET utf8
+            DEFAULT COLLATE utf8_general_ci;
+        """
+        self.cursor.execute(sqlDB)
+        sqlTB = """
+            CREATE TABLE IF NOT EXISTS `code_map`(
+               `id` INT UNSIGNED AUTO_INCREMENT,
+               `code` INT(6) NOT NULL,
+               `name` VARCHAR(50) NOT NULL,
+               PRIMARY KEY ( `id` )
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+        """
+        self.cursor.execute(sqlTB)
